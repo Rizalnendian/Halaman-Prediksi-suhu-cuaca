@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Prakiraan Cuaca di Jakarta</title>
+</head>
+<body>
+    <h1 style="text-align: center">Data Prakiraan Cuaca di Jakarta</h1>
+    <div style="display: flex; justify-content: center;">
+        <table border="1" style="width: 100%; max-width: 800px;">
+            <thead>
+                <tr>
+                    <th>Waktu</th>
+                    <th>suhu (Celcius)</th>
+                </tr>
+            </thead>
+            <tbody id="bodyCuaca">
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <script>
+        const API_URL ="https://api.open-meteo.com/v1/forecast?latitude=-6.2&longitude=106.8&hourly=temperature_2m";
+
+        async function loadWeather(){
+            const response = await fetch(API_URL);
+            const data = await response.json();
+
+            const times = data.hourly.time;
+            const temps = data.hourly.temperature_2m;
+
+            const tbody = document.getElementById("bodyCuaca");
+
+            for (let i = 0; i < times.length; i++){
+                let row = document.createElement("tr");
+
+                let timecell = document.createElement("td");
+                timecell.textContent = times[i];
+
+                let tempcell = document.createElement("td");
+                tempcell.textContent = temps[i];
+
+                row.appendChild(timecell);
+                row.appendChild(tempcell);
+
+                tbody.appendChild(row);
+            }
+        }
+
+        loadWeather();
+    </script>
+
+</body>
+</html>
